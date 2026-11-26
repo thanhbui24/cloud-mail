@@ -101,9 +101,10 @@ function initEditor() {
          --scrollbar-thumb-color: ${uiStore.dark ? '#8D9095' : '#A8ABB2'};
     }`,
     plugins: 'link image advlist lists  emoticons fullscreen  table preview code',
-    toolbar: 'bold emoticons forecolor backcolor italic fontsize | alignleft aligncenter alignright alignjustify | outdent indent |  bullist numlist | link image  | table code preview fullscreen',
+    toolbar: 'bold emoticons forecolor backcolor italic fontfamily fontsize | alignleft aligncenter alignright alignjustify | outdent indent |  bullist numlist | link image  | table code preview fullscreen',
     toolbar_mode: 'scrolling',
     font_size_formats: '8px 10px 12px 14px 16px 18px 24px 36px',
+    font_family_formats: 'Arial=arial,helvetica,sans-serif; Roboto=roboto,arial,sans-serif; Times New Roman=times new roman,times,serif; Tahoma=tahoma,arial,sans-serif; Verdana=verdana,geneva,sans-serif; Georgia=georgia,serif; Courier New=courier new,courier,monospace',
     emoticons_search: false,
     language: language.value,
     language_load: true,
