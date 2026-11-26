@@ -625,10 +625,10 @@ function openForward(email) {
   defValue.value = ''
 
   setTimeout(() => {
-    defValue.value = `
+    defValue.value = `<div><br></div>${signatureHtml()}<div><br></div>
       ${formatImage(email.content) || `<pre style="font-family: inherit;word-break: break-word;white-space: pre-wrap;margin: 0">${email.text}</pre>`}
     `
-    open()
+    open(false)
 
     nextTick(() => {
       backReply.content = editor.value.getContent()
@@ -659,7 +659,7 @@ function openReply(email) {
 
   setTimeout(() => {
     defValue.value = `
-    <div></div>
+    <div></div>${signatureHtml()}
     <div>
     <br>
         ${formatDetailDate(email.createTime)} ${email.name} &lt${email.sendEmail}&gt ${t('wrote')}:
@@ -669,7 +669,7 @@ function openReply(email) {
           ${formatImage(email.content) || `<pre style="font-family: inherit;word-break: break-word;white-space: pre-wrap;margin: 0">${email.text}</pre>`}
       </article>
     </blockquote>`
-    open()
+    open(false)
 
     nextTick(() => {
       backReply.content = editor.value.getContent()
@@ -687,7 +687,20 @@ function formatImage(content) {
   return content.replace(/{{domain}}/g, toOssDomain(domain) + '/');
 }
 
-function open() {
+function signatureHtml() {
+  const sig = accountStore.currentAccount?.signature || ''
+  if (!sig || !sig.replace(/<[^>]*>/g, '').trim() && !/<img/i.test(sig)) return ''
+  return `<div><br></div><div class="email-signature">${sig}</div>`
+}
+
+function open(withSignature = true) {
+  if (withSignature && !form.sendType && !form.draftId && !editor.value.getContent()) {
+    const sig = signatureHtml()
+    if (sig) {
+      defValue.value = ''
+      setTimeout(() => defValue.value = `<div><br></div>${sig}`)
+    }
+  }
   if (!accountStore.currentAccount.email) {
     form.sendEmail = userStore.user.email;
     form.accountId = userStore.user.account.accountId;
