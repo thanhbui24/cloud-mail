@@ -195,7 +195,7 @@ function formatUserCreateTime(regKey) {
   const currentYear = dayjs().year();
   const expireYear = createTime.year();
 
-  if (settingStore.lang === 'en') {
+  if (settingStore.lang !== 'zh') {
 
     if (expireYear === currentYear) {
       return createTime.format('MMM D, HH:mm');
@@ -224,7 +224,7 @@ function formatExpireTime(expireTime) {
   const currentYear = dayjs().year();
   const expireYear = expireDate.year();
 
-  if (settingStore.lang === 'en') {
+  if (settingStore.lang !== 'zh') {
 
     return expireYear === currentYear
         ? expireDate.format('MMM D')
