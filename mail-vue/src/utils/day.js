@@ -1,12 +1,13 @@
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
+import 'dayjs/locale/vi'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import {useSettingStore} from "@/store/setting.js";
 const settingStore = useSettingStore();
 dayjs.extend(utc)
 dayjs.extend(timezone)
-dayjs.locale(settingStore.lang === 'en' ? 'en' : 'zh-cn')
+dayjs.locale(settingStore.lang === 'zh' ? 'zh-cn' : settingStore.lang)
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export function fromNow(date) {
@@ -16,6 +17,18 @@ export function fromNow(date) {
     const diffMinutes = now.diff(d, 'minute');
     const diffHours = now.diff(d, 'hour');
     const isToday = now.isSame(d, 'day');
+    if (settingStore.lang === 'vi') {
+        if (isToday) {
+            if (diffSeconds < 60) return 'Vừa xong';
+            if (diffMinutes < 60) return diffMinutes + ' phút trước';
+            if (diffHours < 2) return diffHours + ' giờ trước';
+            return d.format('HH:mm');
+        }
+        if (now.subtract(1, 'day').isSame(d, 'day')) {
+            return 'Hôm qua ' + d.format('HH:mm');
+        }
+        return d.year() === now.year() ? d.format('DD/MM') : d.format('DD/MM/YYYY');
+    }
     if (settingStore.lang === 'en') {
 
         if (isToday) {
@@ -71,6 +84,9 @@ export function formatDetailDate(time) {
 
     const isSameYear = now.year() === d.year();
 
+    if (settingStore.lang === 'vi') {
+        return isSameYear ? d.format('HH:mm, DD/MM') : d.format('HH:mm, DD/MM/YYYY');
+    }
     if (settingStore.lang === 'en') {
         return isSameYear
             ? d.format('ddd, MMM D, h:mm A')

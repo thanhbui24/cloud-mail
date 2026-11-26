@@ -29,7 +29,7 @@
                 <div>
                   <el-select
                       @change="change"
-                      :style="`width: ${ locale === 'en' ?  100 : 80 }px;`"
+                      :style="`width: ${ locale !== 'zh' ?  100 : 80 }px;`"
                       v-model="setting.regKey"
                       placeholder="Select"
                   >
@@ -301,7 +301,7 @@
                   </el-button>
                   <el-select
                       @change="change"
-                      :style="`width: ${ locale === 'en' ? 100 : 80 }px;`"
+                      :style="`width: ${ locale !== 'zh' ? 100 : 80 }px;`"
                       v-model="setting.registerVerify"
                       placeholder="Select"
                       class="bot-verify-select"
@@ -322,7 +322,7 @@
                   <el-select
                       :model-value="setting.loginVerify"
                       @change="changeField('loginVerify', $event)"
-                      :style="`width: ${ locale === 'en' ? 100 : 80 }px;`"
+                      :style="`width: ${ locale !== 'zh' ? 100 : 80 }px;`"
                       class="bot-verify-select"
                   >
                     <el-option :value="0" :label="$t('enable')"/>
@@ -339,7 +339,7 @@
                   </el-button>
                   <el-select
                       @change="change"
-                      :style="`width: ${ locale === 'en' ? 100 : 80 }px;`"
+                      :style="`width: ${ locale !== 'zh' ? 100 : 80 }px;`"
                       v-model="setting.addEmailVerify"
                       placeholder="Select"
                       class="bot-verify-select"
@@ -1082,7 +1082,7 @@ const tgMsgText = ref('')
 const tgMsgFromOption = [{label: t('show'), value: 'show'}, {label: t('hide'), value: 'hide'}, {label: t('onlyName'), value:'only-name'}]
 const tgMsgToOption = [{label: t('show'), value: 'show'}, {label: t('hide'), value: 'hide'}]
 const tgMsgTextOption = [{label: t('show'), value: 'show'}, {label: t('hide'), value: 'hide'}]
-const tgMsgLabelWidth = computed(() => locale.value === 'en' ? '120px' : '100px');
+const tgMsgLabelWidth = computed(() => locale.value !== 'zh' ? '120px' : '100px');
 
 getSettings()
 getUpdate()
