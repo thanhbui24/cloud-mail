@@ -24,9 +24,18 @@ const dbInit = {
 		await this.v3_4DB(c);
 		await this.v3_5DB(c);
 		await this.v3_6DB(c);
+		await this.vSignatureDB(c);
 		await userService.initAdmin(c);
 		await settingService.refresh(c);
 		return c.text('success');
+	},
+
+	async vSignatureDB(c) {
+		try {
+			await c.env.db.prepare(`ALTER TABLE account ADD COLUMN signature TEXT NOT NULL DEFAULT ''`).run();
+		} catch (e) {
+			console.warn(`sql skip:${e.message}`);
+		}
 	},
 
 	async v3_6DB(c) {
