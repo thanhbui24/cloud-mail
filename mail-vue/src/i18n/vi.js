@@ -365,7 +365,7 @@ const vi = {
     hide: 'Ẩn',
     onlyName: 'Chỉ tên',
     emailText: 'Nội dung thư',
-    emailPrefix: 'Phần trước @',
+    emailPrefix: 'Tên email (không gồm tên miền)',
     atLeast: 'Ít nhất',
     character: ' ký tự',
     mustNotContain: 'Không được chứa',
