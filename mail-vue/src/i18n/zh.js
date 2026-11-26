@@ -393,5 +393,7 @@ const zh = {
     clientId: '客户端 ID',
     clientSecret: '客户端密钥',
     notOwner: '基础邮箱不属于您',
+    signature: '签名',
+    signatureTip: '从此地址发送的新邮件、回复和转发会自动附加签名。',
 }
 export default zh

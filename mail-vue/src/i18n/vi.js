@@ -393,6 +393,8 @@ const vi = {
     clientId: 'Client ID',
     clientSecret: 'Client Secret',
     notOwner: 'Email gốc không thuộc về bạn',
+    signature: 'Chữ ký',
+    signatureTip: 'Chữ ký tự chèn vào cuối thư mới, thư trả lời và chuyển tiếp gửi từ địa chỉ này. Có thể chèn ảnh/logo, đổi font, cỡ chữ, màu chữ.',
 }
 
 export default vi

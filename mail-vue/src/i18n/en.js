@@ -393,6 +393,8 @@ const en = {
     clientId: 'Client ID',
     clientSecret: 'Client Secret',
     notOwner: 'Base email does not belong to you',
+    signature: 'Signature',
+    signatureTip: 'Automatically added to new, reply and forward emails sent from this address.',
 }
 
 export default en
