@@ -25,6 +25,7 @@
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item v-if="hasPerm('email:send')" @click="openSetName(item)">{{ $t('rename') }}</el-dropdown-item>
+                    <el-dropdown-item v-if="hasPerm('email:send')" @click="openSignature(item)">{{ $t('signature') }}</el-dropdown-item>
                     <el-dropdown-item v-if="item.accountId !== userStore.user.account.accountId" @click="setAsTop(item, index)">{{ $t('pin') }}</el-dropdown-item>
                     <el-dropdown-item v-if="item.accountId !== userStore.user.account.accountId && hasPerm('account:delete')"
                                       @click="remove(item)">{{ $t('delete') }}
@@ -116,6 +117,15 @@
         <span style="font-size: 12px;color: #F56C6C" v-if="botJsError">{{ $t('verifyModuleFailed', {action: $t('add')}) }}</span>
       </div>
     </el-dialog>
+    <el-dialog v-model="signatureShow" :title="$t('signature') + ' · ' + (signatureAccount.email || '')" width="720" destroy-on-close>
+      <div class="signature-box">
+        <div class="signature-tip">{{ $t('signatureTip') }}</div>
+        <div class="signature-editor">
+          <tinyEditor :def-value="signatureValue" ref="signatureEditor" editor-id="signature-editor" />
+        </div>
+        <el-button class="btn" type="primary" @click="saveSignature" :loading="signatureLoading">{{ $t('save') }}</el-button>
+      </div>
+    </el-dialog>
     <el-dialog v-model="setNameShow" :title="$t('changeUserName')">
       <div class="container">
         <el-input v-model="accountName" type="text" :placeholder="$t('username')" autocomplete="off" @keyup.enter="setName">
@@ -136,8 +146,10 @@ import {
   accountDelete,
   accountSetName,
   accountSetAllReceive,
-  accountSetAsTop
+  accountSetAsTop,
+  accountSetSignature
 } from "@/request/account.js";
+import tinyEditor from '@/components/tiny-editor/index.vue'
 import {sleep} from "@/utils/time-utils.js"
 import {isEmail} from "@/utils/verify-utils.js";
 import {useSettingStore} from "@/store/setting.js";
@@ -289,6 +301,34 @@ function setName() {
     })
   }).finally(() => {
     setNameLoading.value = false
+  })
+}
+
+const signatureShow = ref(false)
+const signatureLoading = ref(false)
+const signatureValue = ref('')
+const signatureEditor = ref(null)
+const signatureAccount = ref({})
+
+function openSignature(accountItem) {
+  signatureAccount.value = accountItem
+  signatureValue.value = accountItem.signature || ''
+  signatureShow.value = true
+}
+
+function saveSignature() {
+  if (signatureLoading.value) return
+  const html = signatureEditor.value?.getContent ? signatureEditor.value.getContent() : ''
+  signatureLoading.value = true
+  accountSetSignature(signatureAccount.value.accountId, html).then(() => {
+    signatureAccount.value.signature = html
+    if (accountStore.currentAccount?.accountId === signatureAccount.value.accountId) {
+      accountStore.currentAccount.signature = html
+    }
+    signatureShow.value = false
+    ElMessage({message: t('saveSuccessMsg'), type: 'success', plain: true})
+  }).finally(() => {
+    signatureLoading.value = false
   })
 }
 
@@ -702,4 +742,19 @@ path[fill="#ffdda1"] {
   position: fixed;
 }
 
+.signature-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.signature-tip {
+  font-size: 13px;
+  color: var(--el-text-color-secondary);
+}
+.signature-editor {
+  height: 320px;
+  border: 1px solid var(--el-border-color);
+  border-radius: 6px;
+  overflow: hidden;
+}
 </style>
