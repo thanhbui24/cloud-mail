@@ -117,7 +117,7 @@
         <span style="font-size: 12px;color: #F56C6C" v-if="botJsError">{{ $t('verifyModuleFailed', {action: $t('add')}) }}</span>
       </div>
     </el-dialog>
-    <el-dialog v-model="signatureShow" :title="$t('signature') + ' · ' + (signatureAccount.email || '')" width="720" destroy-on-close>
+    <el-dialog v-model="signatureShow" :title="$t('signature') + ' · ' + (signatureAccount.email || '')" class="signature-dialog" destroy-on-close>
       <div class="signature-box">
         <div class="signature-tip">{{ $t('signatureTip') }}</div>
         <div class="signature-editor">
@@ -713,6 +713,11 @@ path[fill="#ffdda1"] {
     margin-right: 20px !important;
     margin-left: 20px !important;
   }
+}
+
+:deep(.signature-dialog.el-dialog) {
+  width: 780px !important;
+  max-width: calc(100% - 40px) !important;
 }
 
 .select {
